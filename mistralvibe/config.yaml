@@ -1,5 +1,5 @@
 name: Mistral Vibe
-version: "1.0.2"
+version: "1.0.3"
 slug: mistralvibe
 description: >-
   Run Mistral Vibe CLI (Devstral 2) directly inside Home Assistant.
@@ -25,7 +25,6 @@ init: false
 # config dir, command history and trusted-folders database there.
 map:
   - config:rw
-  - addon_config:rw
   - share:rw
   - ssl:ro
   - media:rw
