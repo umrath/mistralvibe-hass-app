@@ -1,3 +1,12 @@
+# Disclaimer
+
+No warranties whatsoever that the code in this repository is doing anything meaningful, is free of harm or may cause serious damage.
+It's your sole responsibility to check the code thoroughly before running/using it.
+
+If it fries your Home Assistant setup, burns your servers, eats your cats or buys bitcoins with all your money - it's your own fault.
+
+You have been warned!
+
 # Mistral Vibe – Home Assistant Add-ons
 
 Home Assistant add-on that runs **Mistral Vibe CLI** (Mistral AI's open-source
