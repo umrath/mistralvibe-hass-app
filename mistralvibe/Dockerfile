@@ -43,10 +43,11 @@ RUN curl -LsSf https://astral.sh/uv/install.sh \
     uv tool install --python 3.13 \
     --index https://pypi.org/simple \
     mistral-vibe \
+
  && UV_INDEX_STRATEGY=unsafe-best-match \
-    uv tool install --python 3.13 \
-    --index https://pypi.org/simple \
-    hass-mcp \
+    uv pip install --python 3.13 \
+    --index-url https://pypi.org/simple \
+    fastmcp httpx \
  && rm -rf /root/.cache /tmp/*
 
 # ---- add-on rootfs ---------------------------------------------------------
@@ -62,5 +63,5 @@ LABEL \
     io.hass.name="Mistral Vibe" \
     io.hass.description="Run Mistral Vibe CLI directly inside Home Assistant" \
     io.hass.type="addon" \
-    io.hass.version="1.4.2" \
+    io.hass.version="1.4.4" \
     maintainer="umrath <thoralf@umrath.net>"
