@@ -1,11 +1,4 @@
 #!/usr/bin/with-contenv bashio
-# ==============================================================================
-# Initialise Mistral Vibe inside the add-on container.
-#
-# Runs once at container start (before services). Populates VIBE_HOME=/data/vibe
-# with a config.toml + .env tailored to the user's add-on options and wires
-# hass-mcp up to the Supervisor API.
-# ==============================================================================
 set -e
 
 VIBE_HOME="/data/vibe"
@@ -16,7 +9,6 @@ LOG_DIR="${VIBE_HOME}/logs/session"
 
 mkdir -p "${VIBE_HOME}/agents" "${VIBE_HOME}/prompts" "${LOG_DIR}"
 
-# ---------- read add-on options ----------------------------------------------
 MISTRAL_API_KEY="$(bashio::config 'mistral_api_key')"
 ACTIVE_MODEL="$(bashio::config 'active_model')"
 DEFAULT_AGENT="$(bashio::config 'default_agent')"
@@ -26,12 +18,9 @@ ENABLE_TELEMETRY="$(bashio::config 'enable_telemetry')"
 
 if [ -z "${MISTRAL_API_KEY}" ] || [ "${MISTRAL_API_KEY}" = "null" ]; then
     bashio::log.fatal "No 'mistral_api_key' configured."
-    bashio::log.fatal "Open https://console.mistral.ai/ to obtain a key,"
-    bashio::log.fatal "then add it under the add-on Configuration tab."
     exit 1
 fi
 
-# ---------- .env (API keys + HA bridge) --------------------------------------
 cat > "${ENV_FILE}" <<EOF
 MISTRAL_API_KEY=${MISTRAL_API_KEY}
 HA_URL=http://supervisor/core
@@ -39,11 +28,42 @@ HA_TOKEN=${SUPERVISOR_TOKEN}
 EOF
 chmod 600 "${ENV_FILE}"
 
-# ---------- config.toml (created on first start, preserved afterwards) -------
-bashio::log.info "Writing Vibe config from template to ${CONFIG_FILE}"
-cp /usr/share/vibe-defaults/config.toml.tpl "${CONFIG_FILE}"
+bashio::log.info "Resolving current Mistral model names via API..."
+MODELS_JSON="$(curl -sf \
+    -H "Authorization: Bearer ${MISTRAL_API_KEY}" \
+    "https://api.mistral.ai/v1/models" || echo "")"
 
-# Always overwrite the managed-by-addon settings so HA options stay authoritative
+resolve_model() {
+    local prefix="$1"
+    local fallback="$2"
+    if [ -n "${MODELS_JSON}" ]; then
+        echo "${MODELS_JSON}" \
+            | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+prefix = sys.argv[1]
+matches = [m['id'] for m in data.get('data', []) if m['id'].startswith(prefix)]
+matches.sort()
+print(matches[-1] if matches else sys.argv[2])
+" "$prefix" "$fallback" 2>/dev/null || echo "$fallback"
+    else
+        echo "$fallback"
+    fi
+}
+
+MODEL_DEVSTRAL_SMALL="$(resolve_model 'devstral-small-2' 'devstral-small-2512')"
+MODEL_DEVSTRAL="$(resolve_model 'devstral-2' 'devstral-2512')"
+MODEL_MAGISTRAL="$(resolve_model 'magistral-medium' 'magistral-medium-2506')"
+
+bashio::log.info "Models: small=${MODEL_DEVSTRAL_SMALL} large=${MODEL_DEVSTRAL} magistral=${MODEL_MAGISTRAL}"
+
+bashio::log.info "Writing Vibe config to ${CONFIG_FILE}"
+sed \
+    -e "s|__DEVSTRAL_SMALL__|${MODEL_DEVSTRAL_SMALL}|g" \
+    -e "s|__DEVSTRAL__|${MODEL_DEVSTRAL}|g" \
+    -e "s|__MAGISTRAL__|${MODEL_MAGISTRAL}|g" \
+    /usr/share/vibe-defaults/config.toml.tpl > "${CONFIG_FILE}"
+
 python3 - "$CONFIG_FILE" "$ACTIVE_MODEL" "$AUTO_UPDATE_CLI" "$ENABLE_TELEMETRY" <<'PY'
 import sys, re, pathlib
 path, model, auto_update, telemetry = sys.argv[1:]
@@ -60,32 +80,18 @@ def upsert(key, value):
 upsert("active_model", f'"{model}"')
 upsert("enable_update_checks", "true" if auto_update == "true" else "false")
 upsert("enable_telemetry", "true" if telemetry == "true" else "false")
-
 pathlib.Path(path).write_text(text)
 PY
 
-# ---------- mark /config and /share as trusted directories -------------------
-# Vibe asks for confirmation when entering an unknown folder. Pre-trust the
-# Home Assistant config + share dirs so the user isn't prompted on every start.
 cat > "${TRUST_FILE}" <<'EOF'
 trusted_folders = [
   "/config",
   "/share",
-  "/addon_config",
   "/data/vibe",
 ]
 EOF
 
-# ---------- read-only ("plan") agent if the user asked for it ----------------
-if [ "${DEFAULT_AGENT}" = "plan" ]; then
-    bashio::log.info "Default agent: PLAN (read-only mode)"
-fi
-
-# ---------- auto-approve helper ----------------------------------------------
-# We don't switch the global default. Instead we let the launcher add
-# --auto-approve when the user opted in via add-on options.
 echo "${AUTO_APPROVE}" > "${VIBE_HOME}/.auto_approve"
 echo "${DEFAULT_AGENT}" > "${VIBE_HOME}/.default_agent"
 
-bashio::log.info "Mistral Vibe initialised in ${VIBE_HOME}"
-bashio::log.info "Active model: ${ACTIVE_MODEL}, agent: ${DEFAULT_AGENT}, auto-approve: ${AUTO_APPROVE}"
+bashio::log.info "Mistral Vibe initialised – model: ${ACTIVE_MODEL}, agent: ${DEFAULT_AGENT}"
