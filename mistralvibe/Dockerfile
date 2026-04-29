@@ -28,6 +28,7 @@ RUN apk add --no-cache \
         nano \
         ncurses \
         openssh-client \
+        py3-pip \
         python3 \
         ripgrep \
         tmux \
@@ -59,5 +60,5 @@ LABEL \
     io.hass.name="Mistral Vibe" \
     io.hass.description="Run Mistral Vibe CLI directly inside Home Assistant" \
     io.hass.type="addon" \
-    io.hass.version="1.4.7" \
+    io.hass.version="1.4.8" \
     maintainer="umrath <thoralf@umrath.net>"
