@@ -62,5 +62,5 @@ LABEL \
     io.hass.name="Mistral Vibe" \
     io.hass.description="Run Mistral Vibe CLI directly inside Home Assistant" \
     io.hass.type="addon" \
-    io.hass.version="1.1.4" \
+    io.hass.version="1.1.6" \
     maintainer="umrath <thoralf@umrath.net>"
