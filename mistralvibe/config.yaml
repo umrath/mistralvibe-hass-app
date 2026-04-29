@@ -5,7 +5,7 @@ description: >-
   Run Mistral Vibe CLI (Devstral 2) directly inside Home Assistant.
   Create automations, debug configurations and manage your smart home with
   natural language through a browser terminal.
-url: https://github.com/YOUR_USER/mistralvibe-hass-addons/tree/main/mistralvibe
+url: https://github.com/umrath/mistralvibe-hass-addons/tree/main/mistralvibe
 arch:
   - amd64
   - aarch64
