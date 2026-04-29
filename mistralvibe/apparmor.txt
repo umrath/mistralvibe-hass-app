@@ -2,9 +2,6 @@
 
 profile mistralvibe flags=(attach_disconnected,mediate_deleted) {
   #include <abstractions/base>
-  #include <abstractions/python>
-  #include <abstractions/nameservice>
-  #include <abstractions/ssl_certs>
 
   capability net_admin,
   capability net_raw,
@@ -42,8 +39,6 @@ profile mistralvibe flags=(attach_disconnected,mediate_deleted) {
 
   /homeassistant/ r,
   /homeassistant/** rwk,
-  /config/ r,
-  /config/** rwk,
   /ssl/ r,
   /ssl/** r,
   /share/ r,
@@ -54,21 +49,10 @@ profile mistralvibe flags=(attach_disconnected,mediate_deleted) {
   /backup/** r,
   /addon_configs/ r,
   /addon_configs/** rwk,
+  /config/ r,
+  /config/** rwk,
 
   /root/ r,
   /root/** rwk,
   /tmp/** rwk,
-
-  / r,
-  /** r,
-  /init ixr,
-  /run/** ixr,
-  /run/** rwk,
-  /usr/lib/s6*/** ixr,
-  /usr/lib/s6*/** r,
-  /command/** ixr,
-  /package/** ixr,
-
-  signal,
-  ptrace read,
 }
