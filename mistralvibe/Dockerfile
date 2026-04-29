@@ -39,7 +39,10 @@ RUN curl -LsSf https://astral.sh/uv/install.sh \
       | env UV_INSTALL_DIR=/usr/local/bin sh \
  && uv python install 3.13 \
  && uv tool install --python 3.13 mistral-vibe \
- && uv tool install --python 3.13 hass-mcp \
+ && UV_INDEX_STRATEGY=unsafe-best-match \
+    uv tool install --python 3.13 \
+    --index https://pypi.org/simple \
+    hass-mcp \
  && rm -rf /root/.cache /tmp/*
 
 # ---- add-on rootfs ---------------------------------------------------------
