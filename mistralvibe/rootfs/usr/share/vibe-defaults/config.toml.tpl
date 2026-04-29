@@ -54,8 +54,8 @@ output_price = 5.0
 [[mcp_servers]]
 name = "hass"
 transport = "stdio"
-command = "hass-mcp"
-args = []
+command = "python3"
+args = ["/usr/share/ha-mcp/server.py"]
 startup_timeout_sec = 30
 
 [mcp_servers.env]

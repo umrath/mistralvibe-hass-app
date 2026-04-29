@@ -56,11 +56,11 @@ RUN chmod a+x \
         /usr/bin/vibe-launcher \
         /etc/cont-init.d/10-init-vibe.sh \
         /etc/services.d/vibe-terminal/run \
-        /etc/services.d/vibe-terminal/finish
+        /etc/services.d/vibe-terminal/finish \n        /usr/share/ha-mcp/server.py
 
 LABEL \
     io.hass.name="Mistral Vibe" \
     io.hass.description="Run Mistral Vibe CLI directly inside Home Assistant" \
     io.hass.type="addon" \
-    io.hass.version="1.3.9" \
+    io.hass.version="1.4.0" \
     maintainer="umrath <thoralf@umrath.net>"
