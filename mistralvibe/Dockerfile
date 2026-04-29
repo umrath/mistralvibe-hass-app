@@ -56,7 +56,7 @@ RUN chmod a+x \
         /usr/bin/vibe-launcher \
         /etc/cont-init.d/10-init-vibe.sh \
         /etc/services.d/vibe-terminal/run \
-        /etc/services.d/vibe-terminal/finish \n        /usr/share/ha-mcp/server.py
+        /etc/services.d/vibe-terminal/finish
 
 LABEL \
     io.hass.name="Mistral Vibe" \
