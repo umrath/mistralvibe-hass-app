@@ -30,6 +30,7 @@ RUN apk add --no-cache \
         openssh-client \
         python3 \
         ripgrep \
+        tmux \
         ttyd \
         tzdata \
     && rm -rf /var/cache/apk/*

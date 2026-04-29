@@ -48,4 +48,4 @@ exec ttyd \
     -t fontSize=14 \
     -t 'theme={"background":"#0f0f17","foreground":"#e6e6f0","cursor":"#ff7a90"}' \
     ${TTYD_DEBUG} \
-    bash -c 'exec /usr/bin/vibe-launcher'
+    tmux new-session -A -s vibe '/usr/bin/vibe-launcher'
