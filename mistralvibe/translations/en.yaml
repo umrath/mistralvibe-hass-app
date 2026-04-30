@@ -3,7 +3,7 @@ configuration:
     name: Mistral API key
     description: >-
       API key from https://console.mistral.ai/. Stored securely in
-      /data/vibe/.env inside the add-on.
+      /data/vibe/.env inside the app.
   active_model:
     name: Active model
     description: >-

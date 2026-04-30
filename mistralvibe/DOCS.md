@@ -1,4 +1,4 @@
-# Mistral Vibe — Home Assistant Add-on
+# Mistral Vibe — Home Assistant App
 
 Run **Mistral Vibe CLI** (Mistral AI's open-source agentic coding agent powered
 by Devstral 2) directly inside Home Assistant. Talk to your smart home in
@@ -17,15 +17,15 @@ services, automations and YAML configs via the `hass-mcp` MCP server.
 ## First-time setup
 
 1. Create a Mistral API key at https://console.mistral.ai/.
-2. Open this add-on, switch to the **Configuration** tab and paste your key
+2. Open this app, switch to the **Configuration** tab and paste your key
    into `mistral_api_key`. Save.
-3. Start the add-on. Open the **Web UI** (or the sidebar entry).
+3. Start the app. Open the **Web UI** (or the sidebar entry).
 4. The terminal opens directly in `/config` with Vibe ready to go. Try:
    - `List all my automations`
    - `Why did motion_sensor_hallway not trigger last night?`
    - `Create an automation to turn off all lights when nobody is home`
 
-No long-lived HA token is required — the add-on uses the Supervisor token
+No long-lived HA token is required — the app uses the Supervisor token
 internally to authenticate `hass-mcp` against Home Assistant Core.
 
 ## Configuration options
@@ -36,7 +36,7 @@ internally to authenticate `hass-mcp` against Home Assistant Core.
 | `active_model` | `devstral-2` | One of `devstral-2`, `devstral-small-2`, `magistral-medium`, `mistral-medium-latest`, `codestral-latest`. Switch on the fly inside Vibe with `/config`. |
 | `default_agent` | `default` | `default` asks before every tool call. `plan` is a fully read-only agent — Vibe can look around but cannot edit, run shells or call services. |
 | `auto_approve` | `false` | When `true`, Vibe skips the confirmation prompt before running tools. **Convenient but dangerous.** Leave off unless you really know what you're doing. |
-| `auto_update_cli` | `true` | Lets Vibe self-update on launch when a newer release is on PyPI. Disable to pin the version that ships with the add-on. |
+| `auto_update_cli` | `true` | Lets Vibe self-update on launch when a newer release is on PyPI. Disable to pin the version that ships with the app. |
 | `enable_telemetry` | `false` | Forwarded to Vibe as the `enable_telemetry` config flag. Off by default. |
 | `log_level` | `info` | Controls the verbosity of the underlying `ttyd` server (`trace`, `debug`, `info`, `notice`, `warning`, `error`, `fatal`). |
 
@@ -44,7 +44,7 @@ Every option above maps 1:1 to a key the init script writes into
 `/data/vibe/config.toml` or `/data/vibe/.env` — so you can also edit them
 directly in a Vibe session if you want full control.
 
-## File-system layout inside the add-on
+## File-system layout inside the app
 
 | Path | Purpose |
 | --- | --- |
@@ -79,7 +79,7 @@ directly in a Vibe session if you want full control.
 ```
 
 `vibe-launcher` is the entry-point that loads the API key from `.env`,
-applies the `auto_approve` / `default_agent` flags from add-on options and
+applies the `auto_approve` / `default_agent` flags from app options and
 execs the CLI. The hass-mcp server is started on demand by Vibe, as a stdio
 child process, and inherits `HA_URL=http://supervisor/core` plus the
 `SUPERVISOR_TOKEN`.
@@ -95,7 +95,7 @@ fully supported.
 
 ## Security notes
 
-- The Mistral API key sits in `/data/vibe/.env` (mode `600`). Only this add-on
+- The Mistral API key sits in `/data/vibe/.env` (mode `600`). Only this app
   can read it.
 - The `SUPERVISOR_TOKEN` is the standard HA add-on token. The `hassio_role`
   is set to `manager`, the same level used by the official Studio Code Server
@@ -111,26 +111,26 @@ fully supported.
 | --- | --- | --- |
 | Engine | Claude Code (Anthropic, closed) | Mistral Vibe CLI (Apache 2.0, open) |
 | Default model | Claude Sonnet | Devstral 2 (123B, open weights) |
-| Auth | Anthropic OAuth (long URL flow) | Mistral API key in add-on options |
+| Auth | Anthropic OAuth (long URL flow) | Mistral API key in app options |
 | Local inference | No | Yes (via Ollama / vLLM / on-prem) |
 | HA bridge | hass-mcp via stdio | hass-mcp via stdio (same lib) |
 | Web UI | ttyd terminal in ingress | ttyd terminal in ingress |
 | State dir | `/data/claude` | `/data/vibe` |
 
-The two add-ons can be installed side-by-side — they use different slugs and
+The two apps can be installed side-by-side — they use different slugs and
 different state directories.
 
 ## Troubleshooting
 
-- **"No mistral_api_key configured" on start** — open the add-on's
+- **"No mistral_api_key configured" on start** — open the app's
   Configuration tab, paste a key, save, then restart.
 - **Terminal opens but `vibe` says it can't reach `api.mistral.ai`** — check
-  the host's outbound network. The add-on does not require any port forwards;
+  the host's outbound network. The app does not require any port forwards;
   it only needs HTTPS egress.
 - **`hass` MCP tools fail with 401** — the `SUPERVISOR_TOKEN` is rotated
-  whenever the add-on restarts. A simple add-on restart fixes it.
-- **Want to start clean** — stop the add-on, delete `/data/vibe`, start again.
-  Your add-on options will rebuild the config; only command history and
+  whenever the app restarts. A simple app restart fixes it.
+- **Want to start clean** — stop the app, delete `/data/vibe`, start again.
+  Your app options will rebuild the config; only command history and
   session logs are lost.
 
 ## Credits
