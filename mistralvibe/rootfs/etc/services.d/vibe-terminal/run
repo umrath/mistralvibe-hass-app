@@ -16,6 +16,10 @@ export VIBE_HOME=/data/vibe
 export PS1='\[\e[1;35m\]vibe\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]$ '
 export HISTFILE=/data/vibe/.bash/history
 alias vibe-restart='pkill -f mistral-vibe || true; vibe-launcher'
+alias v='vibe-launcher'
+alias ha-config='cd /config && ls'
+alias ha-logs='ha core logs 2>&1 | tail -50'
+alias ha-errors='ha core logs 2>&1 | grep -iE "(error|exception)" | tail -50'
 BASHRC
 
 LOG_LEVEL="$(bashio::config 'log_level')"
