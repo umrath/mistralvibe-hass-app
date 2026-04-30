@@ -126,6 +126,10 @@ MODEL_DEVSTRAL_SMALL="$(resolve_model 'devstral-small-2' 'devstral-small-2507')"
 MODEL_DEVSTRAL="$(resolve_model 'devstral-2' 'devstral-2512')"
 MODEL_MAGISTRAL="$(resolve_model 'magistral-medium' 'magistral-medium-latest')"
 
+[ -z "${MODEL_DEVSTRAL_SMALL}" ] && MODEL_DEVSTRAL_SMALL="devstral-small-2507"
+[ -z "${MODEL_DEVSTRAL}" ] && MODEL_DEVSTRAL="devstral-2512"
+[ -z "${MODEL_MAGISTRAL}" ] && MODEL_MAGISTRAL="magistral-medium-latest"
+
 bashio::log.info "Models: small=${MODEL_DEVSTRAL_SMALL} large=${MODEL_DEVSTRAL} magistral=${MODEL_MAGISTRAL}"
 
 bashio::log.info "Writing Vibe config to ${CONFIG_FILE}"
