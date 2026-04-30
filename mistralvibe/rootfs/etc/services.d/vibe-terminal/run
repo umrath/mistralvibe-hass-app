@@ -26,6 +26,8 @@ case "${LOG_LEVEL}" in
 esac
 
 SESSION_PERSISTENCE="$(bashio::config 'session_persistence')"
+FONT_SIZE="$(bashio::config 'terminal_font_size')"
+THEME="$(bashio::config 'terminal_theme')"
 
 if [ "${SESSION_PERSISTENCE}" = "true" ]; then
     mkdir -p /root/.config/tmux
@@ -49,7 +51,7 @@ exec ttyd \
     --ping-interval 30 \
     -t scrollback=20000 \
     -t titleFixed="Mistral Vibe" \
-    -t fontSize=14 \
-    -t 'theme={"background":"#0f0f17","foreground":"#e6e6f0","cursor":"#ff7a90"}' \
+    -t fontSize="${FONT_SIZE:-14}" \
+    -t "theme=$([ \"${THEME:-dark}\" = \"light\" ] && echo '{"background":"#eff1f5","foreground":"#4c4f69","cursor":"#dc8a78"}' || echo '{"background":"#0f0f17","foreground":"#e6e6f0","cursor":"#ff7a90"}')" \
     ${TTYD_DEBUG} \
     bash -c "${TERMINAL_CMD}"

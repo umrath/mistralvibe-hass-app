@@ -33,6 +33,14 @@ configuration:
     name: Log-Level
     description: >-
       Detailgrad des zugrundeliegenden Terminal-Servers (ttyd).
+  terminal_font_size:
+    name: Schriftgröße Terminal
+    description: >-
+      Schriftgröße des Web-Terminals in Pixeln (10-24).
+  terminal_theme:
+    name: Terminal-Theme
+    description: >-
+      Farbschema des Web-Terminals. dark oder light.
   reset_data:
     name: Add-on-Daten zurücksetzen
     description: >-

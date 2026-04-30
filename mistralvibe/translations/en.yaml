@@ -33,6 +33,14 @@ configuration:
     name: Log level
     description: >-
       Verbosity of the underlying terminal server (ttyd).
+  terminal_font_size:
+    name: Terminal font size
+    description: >-
+      Font size for the web terminal in pixels (10-24).
+  terminal_theme:
+    name: Terminal theme
+    description: >-
+      Color theme for the web terminal. dark or light.
   reset_data:
     name: Reset add-on data
     description: >-
