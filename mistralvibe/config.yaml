@@ -1,5 +1,5 @@
 name: Mistral Vibe
-version: "1.7.6"
+version: "1.7.7"
 slug: mistralvibe
 description: >-
   Run Mistral Vibe CLI (Devstral 2) directly inside Home Assistant.
