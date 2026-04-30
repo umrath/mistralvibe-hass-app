@@ -21,7 +21,7 @@ Anthropic's Claude.
 
 | App | Description |
 | --- | --- |
-| **Mistral Vibe** (`./mistralvibe`) | Browser terminal running Mistral Vibe CLI with full Home Assistant integration via the `hass-mcp` MCP server. |
+| **Mistral Vibe** (`./mistralvibe`) | Browser terminal running Mistral Vibe CLI with full Home Assistant integration via a custom MCP server. |
 
 ## Installation
 
