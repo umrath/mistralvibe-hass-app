@@ -98,6 +98,7 @@ HA_URL=http://supervisor/core
 HA_TOKEN=${SUPERVISOR_TOKEN}
 EOF
 chmod 600 "${ENV_FILE}"
+chmod 600 "${CONFIG_FILE}"
 
 bashio::log.info "Resolving current Mistral model names via API..."
 MODELS_JSON="$(curl -sf \
