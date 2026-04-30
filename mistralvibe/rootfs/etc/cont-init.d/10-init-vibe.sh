@@ -18,7 +18,12 @@ fi
 
 
 bashio::log.info "Writing dynamic ha.md system prompt"
-HA_VERSION=$(curl -sf -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" http://supervisor/core/api/config | python3 -c "import sys,json; print(json.load(sys.stdin).get('version','unknown'))" 2>/dev/null || echo "unknown")
+if [ -n "${SUPERVISOR_TOKEN}" ]; then
+    HA_VERSION=$(curl -sf --max-time 5 -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" http://supervisor/core/api/config | python3 -c "import sys,json; print(json.load(sys.stdin).get('version','unknown'))" 2>/dev/null || echo "unknown")
+else
+    HA_VERSION="unknown"
+    bashio::log.warning "SUPERVISOR_TOKEN not set, HA version unknown"
+fi
 
 cat > "${VIBE_HOME}/prompts/ha.md" << HAMD
 You are an AI assistant running inside a Home Assistant app (version ${HA_VERSION}).
