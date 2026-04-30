@@ -52,14 +52,14 @@ Abrechnung per Token. Aktuelle Preise: Devstral Small 2 ab $0.10/1M Input-Token,
    - `Create an automation to turn off all lights when nobody is home`
 
 No long-lived HA token is required — the app uses the Supervisor token
-internally to authenticate `hass-mcp` against Home Assistant Core.
+internally to authenticate the custom MCP server against Home Assistant Core.
 
 ## Configuration options
 
 | Option | Default | Description |
 | --- | --- | --- |
 | `mistral_api_key` | *(required)* | Your Mistral API key. Stored in `/data/vibe/.env`, never sent anywhere except `api.mistral.ai`. |
-| `active_model` | `devstral-2` | One of `devstral-2`, `devstral-small-2`, `magistral-medium`, `mistral-medium-latest`, `codestral-latest`. Switch on the fly inside Vibe with `/config`. |
+| `active_model` | `devstral-small-2` | One of `devstral-2`, `devstral-small-2`, `magistral-medium`, `mistral-medium-latest`, `codestral-latest`. Switch on the fly inside Vibe with `/config`. |
 | `default_agent` | `default` | `default` asks before every tool call. `plan` is a fully read-only agent — Vibe can look around but cannot edit, run shells or call services. |
 | `auto_approve` | `false` | When `true`, Vibe skips the confirmation prompt before running tools. **Convenient but dangerous.** Leave off unless you really know what you're doing. |
 | `auto_update_cli` | `true` | Lets Vibe self-update on launch when a newer release is on PyPI. Disable to pin the version that ships with the app. |
@@ -129,15 +129,15 @@ fully supported.
 
 - The Mistral API key sits in `/data/vibe/.env` (mode `600`). Only this app
   can read it.
-- The `SUPERVISOR_TOKEN` is the standard HA add-on token. The `hassio_role`
+- The `SUPERVISOR_TOKEN` is the standard HA app token. The `hassio_role`
   is set to `manager`, the same level used by the official Studio Code Server
-  add-on, so Vibe can manage entities, services, automations, snapshots, etc.
+  app, so Vibe can manage entities, services, automations, snapshots, etc.
 - AppArmor is **enabled by default**. The profile in `apparmor.txt` allows
   what the CLI needs (read/write under `/config`, `/share`, `/data` …) and
   denies the rest.
 - For exploration without any side effects, set `default_agent: plan`.
 
-## Differences vs. the Claude Code add-on
+## Differences vs. the Claude Code app
 
 | Aspect | `claudecode` (robsonfelix) | `mistralvibe` (this) |
 | --- | --- | --- |

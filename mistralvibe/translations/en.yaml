@@ -42,7 +42,7 @@ configuration:
     description: >-
       Color theme for the web terminal. dark or light.
   reset_data:
-    name: Reset add-on data
+    name: Reset app data
     description: >-
       Wipe /data/vibe on next start. Resets config, history and session logs.
       Set back to false after use.

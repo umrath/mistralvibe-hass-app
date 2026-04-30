@@ -1,5 +1,5 @@
 name: Mistral Vibe
-version: "1.7.5"
+version: "1.7.6"
 slug: mistralvibe
 description: >-
   Run Mistral Vibe CLI (Devstral 2) directly inside Home Assistant.
@@ -19,7 +19,7 @@ panel_title: Mistral Vibe
 init: false
 
 # --- Persistent state --------------------------------------------------------
-# /data is the persistent volume HA gives every add-on. We store the Vibe
+# /data is the persistent volume HA gives every app. We store the Vibe
 # config dir, command history and trusted-folders database there.
 map:
   - config:rw
@@ -29,8 +29,8 @@ map:
   - backup:ro
 
 # --- Home Assistant API access ----------------------------------------------
-# These give the add-on a SUPERVISOR_TOKEN that can talk to the HA Core REST
-# API. The hass-mcp MCP server uses this token to expose entities, services,
+# These give the app a SUPERVISOR_TOKEN that can talk to the HA Core REST
+# API. The custom MCP server uses this token to expose entities, services,
 # automations, etc. to Vibe – no manual long-lived token needed.
 hassio_api: true
 homeassistant_api: true

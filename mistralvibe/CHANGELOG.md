@@ -2,12 +2,6 @@
 
 All notable changes to this app will be documented in this file.
 
-## 1.7.2 — 2026-04-30
-
-### Fixed
-- Documentation: replaced outdated hass-mcp references with custom MCP server
-- Removed addon_config from filesystem layout (not mounted)
-
 ## 1.7.1 — 2026-04-30
 
 ### Added

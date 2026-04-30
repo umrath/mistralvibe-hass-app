@@ -42,7 +42,7 @@ configuration:
     description: >-
       Farbschema des Web-Terminals. dark oder light.
   reset_data:
-    name: Add-on-Daten zurücksetzen
+    name: App-Daten zurücksetzen
     description: >-
       Löscht /data/vibe beim nächsten Start. Danach manuell wieder auf false setzen.
   session_persistence:
