@@ -113,3 +113,20 @@ All notable changes to this app will be documented in this file.
 - Persistent state under /data/vibe (config, history, session logs)
 - AppArmor profile
 - Multi-arch builds: amd64, aarch64
+
+## 1.7.4 — 2026-04-30
+
+### Added
+- ha CLI binary installed in Dockerfile (from github.com/home-assistant/cli)
+- ha-logs and ha-errors aliases restored to use ha CLI
+
+## 1.7.3 — 2026-04-30
+
+### Changed
+- CHANGELOG rewritten with full history
+
+## 1.7.2 — 2026-04-30
+
+### Fixed
+- Documentation: replaced outdated hass-mcp references with custom MCP server
+- Removed addon_config from filesystem layout (not mounted)
