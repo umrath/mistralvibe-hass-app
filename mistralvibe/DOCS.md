@@ -121,6 +121,15 @@ fully supported.
 
 ## Security notes
 
+- **Mistral API key** – gespeichert in `/data/vibe/.env` (chmod 600, nur root lesbar).
+- **HA Supervisor Token** – steht in `/data/vibe/config.toml` unter `[mcp_servers.env]` als Klartext. Das ist ein bewusster Kompromiss: Vibe vererbt die Shell-Umgebung nicht an MCP-Kindprozesse, daher muss der Token explizit übergeben werden. `/data/vibe/config.toml` ist nur innerhalb des App-Containers zugänglich.
+- **`hassio_role: manager`** – die App hat denselben Supervisor-Zugriff wie der offizielle Studio Code Server. Das ist nötig damit der MCP-Server Entities, Services und Automationen verwalten kann.
+- **AppArmor** – standardmäßig aktiv. Das Profil erlaubt Lese-/Schreibzugriff auf `/config`, `/share`, `/data` und verwehrt alles andere.
+- **`ha_call_service`** – der MCP-Server kann jeden HA-Service aufrufen, inkl. destruktiver wie `homeassistant.stop`. Für reine Inspektion ohne Schreibzugriff `default_agent: plan` verwenden.
+- **`ha_restart`** – kann HA ohne Bestätigung neustarten wenn `auto_approve: true` gesetzt ist. Standardmäßig ist `auto_approve: false`.
+- **`auto_approve: false`** – Standardwert. Vibe fragt vor jedem Tool-Call nach Bestätigung. Nur aktivieren wenn du weißt was du tust.
+
+
 - The Mistral API key sits in `/data/vibe/.env` (mode `600`). Only this app
   can read it.
 - The `SUPERVISOR_TOKEN` is the standard HA add-on token. The `hassio_role`
