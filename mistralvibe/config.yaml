@@ -1,5 +1,5 @@
 name: Mistral Vibe
-version: "1.5.4"
+version: "1.5.5"
 slug: mistralvibe
 description: >-
   Run Mistral Vibe CLI (Devstral 2) directly inside Home Assistant.
@@ -51,6 +51,8 @@ options:
   auto_update_cli: true
   enable_telemetry: false
   log_level: info
+  reset_data: false
+  session_persistence: true
 
 schema:
   mistral_api_key: password
@@ -60,6 +62,8 @@ schema:
   auto_update_cli: bool?
   enable_telemetry: bool?
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
+  reset_data: bool?
+  session_persistence: bool?
 
 # --- Apparmor & startup ------------------------------------------------------
 apparmor: true

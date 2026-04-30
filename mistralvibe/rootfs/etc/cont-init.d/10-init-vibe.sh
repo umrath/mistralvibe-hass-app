@@ -9,6 +9,18 @@ LOG_DIR="${VIBE_HOME}/logs/session"
 
 mkdir -p "${VIBE_HOME}/agents" "${VIBE_HOME}/prompts" "${LOG_DIR}"
 
+RESET_DATA="$(bashio::config 'reset_data')"
+if [ "${RESET_DATA}" = "true" ]; then
+    bashio::log.warning "Wiping ${VIBE_HOME} (reset_data=true)"
+    rm -rf "${VIBE_HOME}"
+    mkdir -p "${VIBE_HOME}/agents" "${VIBE_HOME}/prompts" "${LOG_DIR}"
+fi
+
+cp /usr/share/vibe-defaults/ha.md "${VIBE_HOME}/prompts/ha.md"
+if [ ! -f "/config/VIBE.md" ]; then
+    cp /usr/share/vibe-defaults/VIBE.md /config/VIBE.md
+fi
+
 MISTRAL_API_KEY="$(bashio::config 'mistral_api_key')"
 ACTIVE_MODEL="$(bashio::config 'active_model')"
 DEFAULT_AGENT="$(bashio::config 'default_agent')"
