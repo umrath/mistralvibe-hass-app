@@ -75,6 +75,7 @@ sed \
     -e "s|__DEVSTRAL__|${MODEL_DEVSTRAL}|g" \
     -e "s|__MAGISTRAL__|${MODEL_MAGISTRAL}|g" \
     -e "s|__HA_URL__|http://supervisor/core|g" \
+    -e "s|__HA_TOKEN__|${SUPERVISOR_TOKEN}|g" \
     /usr/share/vibe-defaults/config.toml.tpl > "${CONFIG_FILE}"
 
 python3 - "$CONFIG_FILE" "$ACTIVE_MODEL" "$AUTO_UPDATE_CLI" "$ENABLE_TELEMETRY" <<'PY'
