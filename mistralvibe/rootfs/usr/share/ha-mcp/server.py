@@ -115,5 +115,64 @@ def ha_restart() -> str:
         r.raise_for_status()
     return "Home Assistant restart initiated."
 
+@mcp.tool
+def ha_get_vibe_usage() -> dict:
+    """Get accumulated token usage and estimated costs from all Vibe sessions stored in /data/vibe/logs/session/."""
+    import pathlib as _pathlib
+
+    try:
+        import tomllib
+    except ImportError:
+        import tomli as tomllib
+
+    config_path = _pathlib.Path("/data/vibe/config.toml")
+    prices = {}
+    if config_path.exists():
+        try:
+            cfg = tomllib.loads(config_path.read_text())
+            for m in cfg.get("models", []):
+                name = m.get("name", "")
+                alias = m.get("alias", name)
+                price_in = m.get("input_price", 0.4)
+                price_out = m.get("output_price", 2.0)
+                prices[name] = (price_in, price_out)
+                prices[alias] = (price_in, price_out)
+        except Exception:
+            pass
+
+    logs_dir = _pathlib.Path("/data/vibe/logs/session")
+    if not logs_dir.exists():
+        return {"error": "No session logs found", "sessions": []}
+
+    total_input = total_output = total_cost = 0
+    sessions = []
+
+    for session_dir in sorted(logs_dir.iterdir()):
+        if not session_dir.is_dir():
+            continue
+        for f in session_dir.glob("*.json"):
+            try:
+                data = json.loads(f.read_text())
+                usage = data.get("usage", {})
+                inp = usage.get("prompt_tokens", 0)
+                out = usage.get("completion_tokens", 0)
+                model = data.get("model", "unknown")
+                price_in, price_out = prices.get(model, (0.4, 2.0))
+                cost = (inp * price_in + out * price_out) / 1_000_000
+                sessions.append({"session": session_dir.name, "model": model, "input_tokens": inp, "output_tokens": out, "cost_usd": round(cost, 6)})
+                total_input += inp
+                total_output += out
+                total_cost += cost
+            except Exception:
+                continue
+
+    return {
+        "sessions": sessions,
+        "total_input_tokens": total_input,
+        "total_output_tokens": total_output,
+        "total_cost_usd": round(total_cost, 6),
+        "note": "Estimates based on prices in /data/vibe/config.toml. For exact billing see console.mistral.ai"
+    }
+
 if __name__ == "__main__":
     mcp.run()
