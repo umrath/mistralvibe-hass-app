@@ -36,6 +36,14 @@ configuration:
   reset_data:
     name: Reset add-on data
     description: >-
+      Wipe /data/vibe on next start. Resets config, history and session logs. Set back to false after use.
+  session_persistence:
+    name: Session persistence
+    description: >-
+      Keep the terminal session alive when the browser tab is closed (via tmux). Disable if you have copy/paste issues.
+  reset_data:
+    name: Reset add-on data
+    description: >-
       Wipe /data/vibe on next start. Resets config, history and session logs.
       Set back to false after use.
   session_persistence:

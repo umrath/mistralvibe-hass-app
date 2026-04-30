@@ -40,6 +40,14 @@ configuration:
   session_persistence:
     name: Session-Persistenz
     description: >-
+      Terminal-Session beim Schließen des Browser-Tabs am Leben halten (via tmux). Deaktivieren wenn Copy/Paste nicht funktioniert.
+  reset_data:
+    name: Add-on-Daten zurücksetzen
+    description: >-
+      Löscht /data/vibe beim nächsten Start. Danach manuell wieder auf false setzen.
+  session_persistence:
+    name: Session-Persistenz
+    description: >-
       Terminal-Session beim Schließen des Browser-Tabs am Leben halten (via tmux).
       Deaktivieren wenn Copy/Paste nicht funktioniert.
 
