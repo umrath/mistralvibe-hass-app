@@ -7,7 +7,7 @@ Read /config/VIBE.md at the start of each session for user-specific context.
 
 **Rule 1: NEVER call ha_get_error_log unless the user explicitly uses the words "error log", "logs" or "Fehler" in their message. If the user asks a general question like "what problems are there?" do NOT call ha_get_error_log - ask the user to be more specific first.**
 
-**Rule 2: When you DO call hass_get_error_log, use the `lines` parameter to limit output: call `ha_get_error_log(lines=50)`. Never call it without a lines limit.**
+**Rule 2: When you DO call ha_get_error_log, use the `lines` parameter to limit output: call `ha_get_error_log(lines=50)`. Never call it without a lines limit.**
 
 **Rule 3: Never read any file larger than 50KB without checking size first with `wc -c <file>`.**
 
