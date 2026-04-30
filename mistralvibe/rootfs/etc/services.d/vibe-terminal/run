@@ -45,7 +45,9 @@ exec ttyd \
     --port 7681 \
     --interface 0.0.0.0 \
     --writable \
-    --max-clients 4 \
+    --max-clients 5 \
+    --ping-interval 30 \
+    -t scrollback=20000 \
     -t titleFixed="Mistral Vibe" \
     -t fontSize=14 \
     -t 'theme={"background":"#0f0f17","foreground":"#e6e6f0","cursor":"#ff7a90"}' \

@@ -1,5 +1,5 @@
 name: Mistral Vibe
-version: "1.6.2"
+version: "1.6.3"
 slug: mistralvibe
 description: >-
   Run Mistral Vibe CLI (Devstral 2) directly inside Home Assistant.
@@ -13,6 +13,7 @@ arch:
 # --- Networking / UI ---------------------------------------------------------
 ingress: true
 ingress_port: 7681
+ingress_stream: true
 panel_icon: mdi:robot-outline
 panel_title: Mistral Vibe
 init: false

@@ -56,9 +56,12 @@ RUN chmod a+x \
         /etc/services.d/vibe-terminal/run \
         /etc/services.d/vibe-terminal/finish
 
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -sf http://localhost:7681/ || exit 1
+
 LABEL \
     io.hass.name="Mistral Vibe" \
     io.hass.description="Run Mistral Vibe CLI directly inside Home Assistant" \
     io.hass.type="addon" \
-    io.hass.version="1.6.2" \
+    io.hass.version="1.6.3" \
     maintainer="umrath <thoralf@umrath.net>"
