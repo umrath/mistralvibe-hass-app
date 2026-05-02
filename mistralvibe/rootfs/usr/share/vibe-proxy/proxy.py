@@ -4,8 +4,7 @@ import re
 MOBILE_PATTERNS = [b'iPhone', b'iPad']
 
 def is_mobile(header_bytes):
-    ua = re.search(rb'User-Agent: ([^
-]+)', header_bytes, re.IGNORECASE)
+    ua = re.search(b'User-Agent: ([^\r\n]+)', header_bytes, re.IGNORECASE)
     if ua:
         return any(p in ua.group(1) for p in MOBILE_PATTERNS)
     return False
