@@ -35,6 +35,10 @@ SESSION_PERSISTENCE="$(bashio::config 'session_persistence')"
 FONT_SIZE="$(bashio::config 'terminal_font_size')"
 THEME="$(bashio::config 'terminal_theme')"
 
+THEME_JSON="$([ "${THEME:-dark}" = "light" ] && echo '{"background":"#eff1f5","foreground":"#4c4f69","cursor":"#dc8a78"}' || echo '{"background":"#0f0f17","foreground":"#e6e6f0","cursor":"#ff7a90"}')"
+
+TTYD_OPTS="--writable --max-clients 5 --ping-interval 30 -t scrollback=20000 -t titleFixed=Mistral Vibe -t fontSize=${FONT_SIZE:-14} -t theme=${THEME_JSON} ${TTYD_DEBUG}"
+
 if [ "${SESSION_PERSISTENCE}" = "true" ]; then
     mkdir -p /root/.config/tmux
     cat > /root/.config/tmux/tmux.conf <<'TMUXEOF'
@@ -42,25 +46,18 @@ set -g mouse on
 set -g history-limit 10000
 set -g default-terminal "xterm-256color"
 TMUXEOF
-    TERMINAL_CMD="tmux new-session -A -s vibe '/usr/bin/vibe-launcher'; bash"
+    DESKTOP_CMD="tmux new-session -A -s vibe '/usr/bin/vibe-launcher'; bash"
 else
-    TERMINAL_CMD="/usr/bin/vibe-launcher"
+    DESKTOP_CMD="/usr/bin/vibe-launcher"
 fi
 
-bashio::log.info "Starting ttyd on port 7681 (HA ingress)"
+MOBILE_CMD="/usr/bin/vibe-launcher"
 
-exec ttyd \
-    --port 7681 \
-    --interface 0.0.0.0 \
-    --writable \
-    --max-clients 5 \
-    --ping-interval 30 \
-    -t scrollback=20000 \
-    -t scrollSensitivity=3 \
-    -t fastScrollSensitivity=10 \
-    -t cursorBlink=true \
-    -t titleFixed="Mistral Vibe" \
-    -t fontSize="${FONT_SIZE:-14}" \
-    -t "theme=$([ \"${THEME:-dark}\" = \"light\" ] && echo '{"background":"#eff1f5","foreground":"#4c4f69","cursor":"#dc8a78"}' || echo '{"background":"#0f0f17","foreground":"#e6e6f0","cursor":"#ff7a90"}')" \
-    ${TTYD_DEBUG} \
-    bash -c "${TERMINAL_CMD}"
+bashio::log.info "Starting ttyd desktop on port 7682"
+ttyd --port 7682 --interface 127.0.0.1 ${TTYD_OPTS} bash -c "${DESKTOP_CMD}" &
+
+bashio::log.info "Starting ttyd mobile on port 7683"
+ttyd --port 7683 --interface 127.0.0.1 ${TTYD_OPTS} bash -c "${MOBILE_CMD}" &
+
+bashio::log.info "Starting mobile-detection proxy on port 7681"
+exec python3 /usr/share/vibe-proxy/proxy.py

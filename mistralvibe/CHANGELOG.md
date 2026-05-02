@@ -149,3 +149,10 @@ All notable changes to this app will be documented in this file.
 - m alias detaches tmux (mobile mode), v alias re-attaches to existing tmux session
 - Switch freely between Vibe and bash with v and m
 
+
+## 1.8.2 — 2026-05-02
+
+### Added
+- Automatic mobile detection: iOS clients (iPhone/iPad) get tmux-free session for native touch scrolling
+- TCP proxy on port 7681 routes to desktop (7682, with tmux) or mobile (7683, no tmux) ttyd
+
