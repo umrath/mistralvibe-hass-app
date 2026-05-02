@@ -130,3 +130,9 @@ All notable changes to this app will be documented in this file.
 ### Fixed
 - SUPERVISOR_TOKEN exported in bashrc so ha CLI authenticates automatically
 
+
+## 1.7.9 — 2026-05-02
+
+### Fixed
+- Increased xterm.js scrollSensitivity for better touch scrolling on iOS HA app
+
